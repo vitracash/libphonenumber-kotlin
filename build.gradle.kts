@@ -48,6 +48,7 @@ kotlin {
 
         val androidMain by getting {
             dependencies {
+                // TODO: Find a way to use an Android port but still have working tests (https://github.com/lionscribe/libphonenumber-android)
                 implementation("com.googlecode.libphonenumber:libphonenumber:8.12.41")
             }
         }
