@@ -36,12 +36,13 @@ private fun NBPhoneNumber.asKotlin() = PhoneNumber(
     rawInput = rawInput
 )
 
+@Suppress("CAST_NEVER_SUCCEEDS")
 private fun PhoneNumber.asNative() = NBPhoneNumber().also { phoneNumber ->
-    phoneNumber.countryCode = countryCode?.let { NSNumber(it) }
+    phoneNumber.countryCode = countryCode?.let { it as NSNumber }
     phoneNumber.extension = extension
     phoneNumber.italianLeadingZero = hasItalianLeadingZero
-    phoneNumber.nationalNumber = nationalNumber?.let { NSNumber(it.toInt()) }
-    phoneNumber.numberOfLeadingZeros = numberOfLeadingZeros?.let { NSNumber(it) }
+    phoneNumber.nationalNumber = nationalNumber?.let { it as NSNumber }
+    phoneNumber.numberOfLeadingZeros = numberOfLeadingZeros?.let { it as NSNumber }
     phoneNumber.preferredDomesticCarrierCode = preferredDomesticCarrierCode
     phoneNumber.rawInput = rawInput
 }

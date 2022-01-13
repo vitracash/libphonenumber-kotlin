@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
 plugins {
@@ -70,3 +71,20 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
+
+val iosTest by tasks.creating {
+    val device = project.findProperty("iosDevice")?.toString() ?: "iPhone 12"
+    val testExecutable = kotlin.targets.getByName<KotlinNativeTarget>("iosX64").binaries.getTest("DEBUG")
+    dependsOn(testExecutable.linkTaskName)
+
+    group = JavaBasePlugin.VERIFICATION_GROUP
+    description = "Runs tests for target 'ios' on an iOS simulator"
+
+    doLast {
+        exec {
+            commandLine("xcrun", "simctl", "spawn", "--standalone", device, testExecutable.outputFile.absolutePath)
+        }
+    }
+}
+
+tasks.getByName("allTests").dependsOn(iosTest)
